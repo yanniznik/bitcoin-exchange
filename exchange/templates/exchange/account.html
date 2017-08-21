@@ -1,0 +1,30 @@
+{% extends "exchange/base.html" %}
+{% block header %}
+{% load staticfiles %}
+<link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+<h1>Account</h1>
+
+<form method="post" action="{% url 'exchange:account' %}">
+    {% csrf_token %}
+    <tr>
+        <td>{{ user_form.username }}</td>
+        <td>{{ user_form.first_name }}</td>
+        <td>{{ user_form.last_name }}</td>
+        <td>{{ user_form.email }}</td>
+        </tr>
+        <tr>
+            <td>{{ profile_form.street }}</td>
+            <td>{{ profile_form.city }}</td>
+            <td>{{ profile_form.zip }}</td>
+            <td>{{ profile_form.country }}</td>
+            <td>{{ profile_form.avatar }}</td>
+
+        </tr>
+    </table>
+    <input type="submit" value="update" />
+    <input type="hidden" name="next" value="{{ next_page }}" />
+</form>
+
+{% endblock %}1

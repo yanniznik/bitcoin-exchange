@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    {% load staticfiles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="{% static 'css/common.css' %}" rel="stylesheet" type="text/css">
+    {% block header %}
+    {% endblock %}
+</head>
+<body>
+<div class="container">
+    <div class="row main">
+        <a href="{% url 'exchange:dashboard' %}">back</a>
+        {% if user.is_anonymous %}
+        <a href="{% url 'login' %}">login</a>
+        <a href="{% url 'exchange:signup' %}">register</a><br />
+        {% else %}
+        <a href="{% url 'logout' %}">logout</a>
+        <ul>
+            <li>Username: {{ user.username }}</li>
+            <li>Wallet: {{ wallet.address}}</li>
+            <li>Amount: {{ wallet.amount}} BC</li>
+            <li>Last name: {{ user.last_name }}</li>
+            <li>User ID: {{ current_user.id }}</li>
+        </ul>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "exchange/base.html" %}
+{% block header %}
+{% load staticfiles %}
+<link href="{% static 'css/dashboard.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+
+    <a class="btn btn-primary" href="{% url 'admin:index' %}">Admin panel</a>
+    <a class="btn btn-primary" href="{% url 'exchange:signup' %}">Sign up</a>
+    <a class="btn btn-primary" href="{% url 'exchange:send' %}">Send Money</a>
+    <a class="btn btn-primary" href="{% url 'exchange:account' %}">Account</a>
+    <a class="btn btn-primary" href="{% url 'exchange:history' %}">History</a>
+    <a class="btn btn-primary" href="{% url 'exchange:contacts' %}">Contacts</a>
+
+<div class="transactions-container">
+    <h2>List of transactions</h2>
+{% if transaction_list %}
+
+{% for transaction in transaction_list %}
+    <li>{{ transaction.walletFrom.address }}</li>
+    <li>{{ transaction.walletTo.wallet }}</li>
+    <li>{{ transaction.amount }} BC</li>
+    <li>{{ transaction.created_at }}</li>
+{% endfor %}
+
+{% else %}
+<p>No Transactions</p>
+
+{% endif %}
+</div>
+{% endblock %}
