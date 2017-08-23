@@ -135,3 +135,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_ROOT = '/static/avatar/'
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login'

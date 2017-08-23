@@ -1,1 +1,11 @@
-History
+{% extends "exchange/base.html" %}
+{% block header %}
+{% load staticfiles %}
+<link href="{% static 'css/history.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block content %}
+<h2>History</h2>
+
+{% include "exchange/transaction_list.html" %}
+
+{% endblock %}

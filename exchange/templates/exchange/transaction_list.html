@@ -1,0 +1,38 @@
+<h2>Latest transactions</h2>
+<div class="bloc-container box-shadow">
+
+    {% if transaction_list %}
+
+    {% for transaction in transaction_list %}
+
+    <div class="single-transaction">
+        <div class="row">
+            <div class="col-xs-6">
+                <span>{{ transaction.walletFrom.address }}</span>
+            </div>
+            <div class="col-xs-6">
+                <span>{{ transaction.amount }}</span> BTC
+            </div>
+        </div>
+        <div class="row small-letters">
+            <div class="col-xs-6">
+                <span>{{ transaction.walletTo.address }}</span>
+            </div>
+            <div class="col-xs-6">
+                <span>{{ transaction.created_at }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <div class="single-transaction">
+        <div class="row">
+            <div class="col-xs-12">
+                <span>No transactions yet.</span>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+</div>

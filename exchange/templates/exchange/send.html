@@ -1,53 +1,121 @@
 {% extends "exchange/base.html" %}
 {% block header %}
 {% load staticfiles %}
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+<script src="{% static 'js/send.js' %}"></script>
 <script src="{% static 'js/jquery.steps.min.js' %}"></script>
-
+<script src="{% static 'js/request.js' %}"></script>
 <link href="{% static 'css/steps.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block content %}
-
-<h1>Send</h1>
-
-<form id="example-form" action="#">
+<h2>Send</h2>
+<div class="bloc-container">
+<div id="send-form" action="#">
     <div>
         <h3>Account</h3>
         <section>
-            <label for="userName">User name *</label>
-            <input id="userName" name="userName" type="text" class="required">
-            <label for="password">Password *</label>
-            <input id="password" name="password" type="text" class="required">
-            <label for="confirm">Confirm Password *</label>
-            <input id="confirm" name="confirm" type="text" class="required">
-            <p>(*) Mandatory</p>
+            <div class="form-horizontal">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">From</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="walletFrom">
+                            <option value="{{ wallet.address}}">{{ wallet.address}} ({{ wallet.amount}} BC)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="amount" placeholder="Amount">
+                            <div class="input-group-addon">BTC</div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="amount-usd" placeholder="Amount" value="0">
+                            <div class="input-group-addon">USD</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" id="description" placeholder="Optional"></textarea>
+                    </div>
+                </div>
+            </div>
         </section>
-        <h3>Profile</h3>
+        <h3>Receiver</h3>
         <section>
-            <label for="name">First name *</label>
-            <input id="name" name="name" type="text" class="required">
-            <label for="surname">Last name *</label>
-            <input id="surname" name="surname" type="text" class="required">
-            <label for="email">Email *</label>
-            <input id="email" name="email" type="text" class="required email">
-            <label for="address">Address</label>
-            <input id="address" name="address" type="text">
-            <p>(*) Mandatory</p>
+            <div class="form-group">
+                <label for="walletTo" class="col-sm-2 control-label">To</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="walletTo" placeholder="Paste a bitcoin wallet address">
+                </div>
+            </div>
+
+            {% include "exchange/contact_list.html" %}
+
+
+
         </section>
-        <h3>Hints</h3>
+        <h3>Add Contact</h3>
         <section>
-            <ul>
-                <li>Foo</li>
-                <li>Bar</li>
-                <li>Foobar</li>
-            </ul>
+            <h2>Add a new contact</h2>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="contactFirst" class="col-sm-2 control-label">First Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="contactFirst" class="form-control" placeholder="First name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contactLast" class="col-sm-2 control-label">Last Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="contactLast" class="form-control" placeholder="Last name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contactLast" class="col-sm-2 control-label">E-mail (optional)</label>
+                    <div class="col-sm-10">
+                        <input type="email" id="contactEmail" class="form-control" placeholder="Optional">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="contactLast" class="col-sm-2 control-label">Wallet</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="contactWallet" disabled class="form-control">
+                    </div>
+                </div>
+
+
+            </form>
         </section>
-        <h3>Finish</h3>
+        <h3>Confirm</h3>
         <section>
-            <input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms">I agree with the Terms and Conditions.</label>
+            <h4>From</h4>
+            <div><span id="f_walletFrom">{{ wallet.address}}</span>BC</div>
+            <div class="substracting">- <span id="f_amount"></span> BTC</div>
+            <div class="substracting">- <span id="f_amount_usd"></span> USD</div>
+            <hr>
+
+            <h4>To</h4>
+            <div><span id="f_walletTo"></span></div>
+            <div>Extra fee: <span id="fee">0</span>%</div>
+            <div class="adding">+ <span id="f_amount_to"></span> BTC</div>
+            <div class="adding">+ <span id="f_amount_to_usd"></span> USD</div>
+            <hr>
+
+            <div>Receiver: <span id="f_contactFirst"></span> <span id="f_contactLast"></span></div>
+            <div>For: <span id="f_description"></span></div>
+
+            <div id="acceptContainer"><input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms">I agree with the Terms and Conditions.</label></div>
+
         </section>
     </div>
-</form>
+</div>
+</div>
 <script src="{% static 'js/steps.js' %}"></script>
 {% endblock %}1

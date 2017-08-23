@@ -1,32 +1,27 @@
 {% extends "exchange/base.html" %}
 {% block header %}
 {% load staticfiles %}
+<!--<script src="http://d3js.org/d3.v3.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+<script src="{% static 'js/graph.js' %}"></script>
 <link href="{% static 'css/dashboard.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block content %}
-<h1>Dashboard</h1>
+<div class="dashboard-top">
+<h2>Price over time (August)</h2>
+<div class="chart-container">
+<canvas id="historical_data"></canvas>
+</div>
+</div>
+<div class="dashboard-bottom">
+    <div class="row">
+        <div class="col-md-6">
+            {% include "exchange/transaction_list.html" %}
+        </div>
+        <div class="col-md-6">
+            {% include "exchange/contact_list.html" %}
+        </div>
+    </div>
 
-    <a class="btn btn-primary" href="{% url 'admin:index' %}">Admin panel</a>
-    <a class="btn btn-primary" href="{% url 'exchange:signup' %}">Sign up</a>
-    <a class="btn btn-primary" href="{% url 'exchange:send' %}">Send Money</a>
-    <a class="btn btn-primary" href="{% url 'exchange:account' %}">Account</a>
-    <a class="btn btn-primary" href="{% url 'exchange:history' %}">History</a>
-    <a class="btn btn-primary" href="{% url 'exchange:contacts' %}">Contacts</a>
-
-<div class="transactions-container">
-    <h2>List of transactions</h2>
-{% if transaction_list %}
-
-{% for transaction in transaction_list %}
-    <li>{{ transaction.walletFrom.address }}</li>
-    <li>{{ transaction.walletTo.wallet }}</li>
-    <li>{{ transaction.amount }} BC</li>
-    <li>{{ transaction.created_at }}</li>
-{% endfor %}
-
-{% else %}
-<p>No Transactions</p>
-
-{% endif %}
 </div>
 {% endblock %}

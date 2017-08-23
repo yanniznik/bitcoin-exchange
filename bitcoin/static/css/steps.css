@@ -137,20 +137,15 @@
     color: #fff;
 }
 
-.wizard > .content
-{
-    background: #eee;
+.wizard > .content {
     display: block;
-    margin: 0.5em;
-    min-height: 35em;
     overflow: hidden;
     position: relative;
     width: auto;
-
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    min-height: 35em;
 }
+
+
 
 .wizard.vertical > .content
 {
@@ -189,7 +184,6 @@
 .wizard > .content > .body input
 {
     display: block;
-    border: 1px solid #ccc;
 }
 
 .wizard > .content > .body input[type="checkbox"]

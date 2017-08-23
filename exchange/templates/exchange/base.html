@@ -4,34 +4,52 @@
     <title>Dashboard</title>
     {% load staticfiles %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">-->
     <link href="{% static 'css/common.css' %}" rel="stylesheet" type="text/css">
     {% block header %}
     {% endblock %}
 </head>
 <body>
-<div class="container">
-    <div class="row main">
-        <a href="{% url 'exchange:dashboard' %}">back</a>
-        {% if user.is_anonymous %}
-        <a href="{% url 'login' %}">login</a>
-        <a href="{% url 'exchange:signup' %}">register</a><br />
-        {% else %}
-        <a href="{% url 'logout' %}">logout</a>
-        <ul>
-            <li>Username: {{ user.username }}</li>
-            <li>Wallet: {{ wallet.address}}</li>
-            <li>Amount: {{ wallet.amount}} BC</li>
-            <li>Last name: {{ user.last_name }}</li>
-            <li>User ID: {{ current_user.id }}</li>
-        </ul>
-        {% endif %}
+<div id="exception_handler"></div>
+<div class="big-container">
+<div class="sidebar">
+    <div class="upper-sidebar">
+        <div class="user-avatar box-shadow">
+            <img src="https://pbs.twimg.com/profile_images/696472986556239872/XEaLqHNa_400x400.png" alt="">
+        </div>
+        <div class="username"><a href="{% url 'exchange:account' %}">{{ user.username }}</a></div>
+    </div>
+    <div class="menu">
+        <div><a href="{% url 'exchange:dashboard' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Dashboard</a></div>
+        <div><a href="{% url 'exchange:send' %}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>Send Money</a></div>
+        <div><a href="{% url 'exchange:request' %}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Request Money</a></div>
 
+        <div><a href="{% url 'exchange:history' %}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>History</a></div>
+        <div><a href="{% url 'exchange:contacts' %}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>Contacts</a></div>
+        <div><a href="{% url 'exchange:account' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Account</a></div>
+    </div>
+    <div class="actions">
+        <div><a href="{% url 'admin:index' %}">Admin panel</a></div>
+        <div><a href="{% url 'exchange:signup' %}">register</a></div>
+        <div><a href="{% url 'login' %}">login</a></div>
+    </div>
+</div>
+<!--end sidebar-->
+<div class="info-bar">
+    <div><h5>Wallet</h5><span>{{ wallet.address}}</span></div>
+    <div><h5>Available</h5><span id="wallet_amount">{{ wallet.amount}}</span> BC</div>
+    <div><h5>Current Rate</h5><span id="rate">{{ current_price_usd }}</span> USD</div>
+    <div><h5>Worth</h5><span id="worth">{{ wallet_worth }}</span> USD</div>
+    <div class="log-out"><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></a></div>
+</div>
+<div class="main-container">
         {% block content %}
         {% endblock %}
-    </div>
+</div>
 </div>
 </body>
 </html>

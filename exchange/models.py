@@ -1,6 +1,7 @@
 import random
 import uuid
 
+from django.core.exceptions import NON_FIELD_ERRORS
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -17,7 +18,7 @@ class Profile(models.Model):
 
 class Wallets(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.FloatField(default=0)
+    amount = models.DecimalField(max_digits=19, decimal_places=10, default=0)
     address = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -34,17 +35,18 @@ def save_user_profile(sender, instance, **kwargs):
 class Contacts(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=200)
-    friend = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=200, default="null")
+    friend = models.ForeignKey(User, on_delete=models.CASCADE)
     wallet = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
-
-
+    # class Meta:
+    #     unique_together = ("friend", "wallet")
 
 class Transactions(models.Model):
-    walletFrom = models.ForeignKey(Wallets, on_delete=models.CASCADE)
-    walletTo = models.ForeignKey(Contacts, on_delete=models.CASCADE)
-    amount = models.FloatField()
+    walletFrom = models.ForeignKey(Wallets, on_delete=models.CASCADE, related_name='walletFrom')
+    walletTo = models.ForeignKey(Wallets, on_delete=models.CASCADE, related_name='walletTo')
+    amount = models.DecimalField(max_digits=19, decimal_places=10)
+    description = models.CharField(max_length=250, default="null")
     created_at = models.DateTimeField(auto_now_add=True)
 
 
