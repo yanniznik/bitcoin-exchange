@@ -3,7 +3,21 @@ $(document).ready(function(){
 	rate = parseFloat($("#rate").text());
 	wallet_worth = current_amount * rate;
 	$("#worth").text(wallet_worth.toFixed(2))
+
+	var current_wallet = $("#wallet_address").text()
+
+	$(".transactionFrom").each(function( index ) {
+		if ($(this).text() == current_wallet) {
+			$(this).closest(".single-transaction").addClass('moneyout');
+			$(".moneyout").each(function(index) {
+				$(this).find(".sign").text('-')
+			});
+		}
+});
+	
 })
+
+
 
 
 var send_message = function(message, type) {

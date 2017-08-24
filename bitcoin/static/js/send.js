@@ -23,7 +23,7 @@ var sendMoney = function() {
 
 $(document).ready(function(){
 
-    $('.single-contact').click('click', function() {
+    $('.single-transaction').click('click', function() {
         $("#walletTo").val($(this).find(".contactWallet").html());
         $('#f_walletTo').text($("#walletTo").val())
         $('#f_contactFirst').text($(this).find(".contactFirst").html())

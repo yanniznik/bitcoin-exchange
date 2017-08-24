@@ -1,17 +1,14 @@
 <h2>Latest contacts</h2>
 <div class="bloc-container box-shadow">
-
     {% if contact_list %}
-
     {% for contact in contact_list %}
-
     <div class="single-transaction">
         <div class="row">
             <div class="col-xs-6">
                 <span>{{ contact.first_name }} {{ contact.last_name }} </span>
             </div>
             <div class="col-xs-6">
-                <span>#{{ contact.wallet }}</span>
+                #<span class="contactWallet">{{ contact.wallet }}</span>
             </div>
         </div>
         <div class="row small-letters">
@@ -24,15 +21,13 @@
         </div>
     </div>
     {% endfor %}
-
     {% else %}
-    <div class="single-transaction">
+    <div class="single-transaction-empty">
         <div class="row">
             <div class="col-xs-12">
                 <span>No contacts yet.</span>
             </div>
         </div>
     </div>
-
     {% endif %}
 </div>

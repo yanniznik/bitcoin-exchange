@@ -26,7 +26,7 @@ $(document).ready(function(){
                     padding: {
                         left: 40,
                         right: 40,
-                        top: 30,
+                        top: 20,
                         bottom: 0
                     }
                 },

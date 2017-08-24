@@ -16,40 +16,48 @@
 <body>
 <div id="exception_handler"></div>
 <div class="big-container">
-<div class="sidebar">
-    <div class="upper-sidebar">
-        <div class="user-avatar box-shadow">
-            <img src="https://pbs.twimg.com/profile_images/696472986556239872/XEaLqHNa_400x400.png" alt="">
+    <div class="sidebar">
+        <div class="upper-sidebar">
+            <div class="user-avatar box-shadow" style="background-image: url('/images/{{ current_user.avatar }}')">
+            </div>
+            <div class="username"><a href="{% url 'exchange:account' %}">{{ user.username }}</a></div>
         </div>
-        <div class="username"><a href="{% url 'exchange:account' %}">{{ user.username }}</a></div>
+        <div class="menu">
+            <div><a href="{% url 'exchange:dashboard' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Dashboard</a></div>
+            <div><a href="{% url 'exchange:send' %}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>Send Money</a></div>
+            <div><a href="{% url 'exchange:request' %}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Request Money</a></div>
+            <div><a href="{% url 'exchange:history' %}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>History</a></div>
+            <div><a href="{% url 'exchange:contacts' %}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>Contacts</a></div>
+            <div><a href="{% url 'exchange:account' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Account</a></div>
+            {% if request.user.is_superuser %}
+            <div><a href="{% url 'admin:index' %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>Admin panel</a></div>
+            {% endif %}
+        </div>
     </div>
-    <div class="menu">
-        <div><a href="{% url 'exchange:dashboard' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Dashboard</a></div>
-        <div><a href="{% url 'exchange:send' %}"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>Send Money</a></div>
-        <div><a href="{% url 'exchange:request' %}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Request Money</a></div>
-
-        <div><a href="{% url 'exchange:history' %}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>History</a></div>
-        <div><a href="{% url 'exchange:contacts' %}"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>Contacts</a></div>
-        <div><a href="{% url 'exchange:account' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>Account</a></div>
+    <!--end sidebar-->
+    <div class="info-bar">
+        <div>
+            <h5>Wallet</h5>
+            <span id="wallet_address">{{ wallet.address}}</span>
+        </div>
+        <div>
+            <h5>Available</h5>
+            <span id="wallet_amount">{{ wallet.amount}}</span> BC
+        </div>
+        <div>
+            <h5>Current Rate</h5>
+            <span id="rate">{{ current_price_usd }}</span> USD
+        </div>
+        <div>
+            <h5>Worth</h5>
+            <span id="worth">{{ wallet_worth }}</span> USD
+        </div>
+        <div class="log-out"><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></a></div>
     </div>
-    <div class="actions">
-        <div><a href="{% url 'admin:index' %}">Admin panel</a></div>
-        <div><a href="{% url 'exchange:signup' %}">register</a></div>
-        <div><a href="{% url 'login' %}">login</a></div>
-    </div>
-</div>
-<!--end sidebar-->
-<div class="info-bar">
-    <div><h5>Wallet</h5><span>{{ wallet.address}}</span></div>
-    <div><h5>Available</h5><span id="wallet_amount">{{ wallet.amount}}</span> BC</div>
-    <div><h5>Current Rate</h5><span id="rate">{{ current_price_usd }}</span> USD</div>
-    <div><h5>Worth</h5><span id="worth">{{ wallet_worth }}</span> USD</div>
-    <div class="log-out"><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></a></div>
-</div>
-<div class="main-container">
+    <div class="main-container">
         {% block content %}
         {% endblock %}
-</div>
+    </div>
 </div>
 </body>
 </html>

@@ -1,21 +1,42 @@
-{% block content %}
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-<a href="{% url 'exchange:signup' %}">register</a><br />
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <table>
-        <tr>
-            <td>Username : {{ form.username.label_tag }}</td>
-            <td>{{ form.username }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.password.label_tag }}</td>
-            <td>{{ form.password }}</td>
-        </tr>
-    </table>
-    <input type="submit" value="login" />
-    <input type="hidden" name="next" value="{{ next_page }}" />
-</form>
+{% extends "exchange/public.html" %}
+{% block header %}
+{% load staticfiles %}
+<script src="https://www.mattboldt.com/demos/typed-js/js/typed.custom.js"></script>
+<script src="{% static 'js/login.js' %}"></script>
+<link href="{% static 'css/login.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
+
+{% block content %}
+
+
+
+            <div class="upper-login">
+                <a href="{% url 'exchange:signup' %}">Sign Up</a>
+                <span> or </span>
+                <a class="active" href="{%  url 'login' %}">Sign In</a>
+            </div>
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>{{ form.username.label_tag }}</h4>
+                        <div>{{ form.username }}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>{{ form.password.label_tag }}</h4>
+                        <div>{{ form.password }}</div>
+                    </div>
+                </div>
+                {% if form.errors %}
+                <br>
+                <p>Your username and password didn't match. Please try again.</p>
+                {% endif %}
+                <input type="submit" value="Login" />
+                <input type="hidden" name="next" value="{{ next_page }}" />
+            </form>
+
+
+{% endblock %}
+

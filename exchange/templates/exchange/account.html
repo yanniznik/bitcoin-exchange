@@ -1,30 +1,98 @@
 {% extends "exchange/base.html" %}
-{% block header %}
-{% load staticfiles %}
-<link href="{% static 'css/account.css' %}" rel="stylesheet" type="text/css">
-{% endblock %}
 {% block content %}
-<h1>Account</h1>
-
-<form method="post" action="{% url 'exchange:account' %}">
-    {% csrf_token %}
-    <tr>
-        <td>{{ user_form.username }}</td>
-        <td>{{ user_form.first_name }}</td>
-        <td>{{ user_form.last_name }}</td>
-        <td>{{ user_form.email }}</td>
-        </tr>
-        <tr>
-            <td>{{ profile_form.street }}</td>
-            <td>{{ profile_form.city }}</td>
-            <td>{{ profile_form.zip }}</td>
-            <td>{{ profile_form.country }}</td>
-            <td>{{ profile_form.avatar }}</td>
-
-        </tr>
-    </table>
-    <input type="submit" value="update" />
-    <input type="hidden" name="next" value="{{ next_page }}" />
-</form>
-
+<h2>Account</h2>
+<div class="account-container">
+    <form class="form-horizontal"  enctype="multipart/form-data"  method="post" action="{% url 'exchange:account' %}" >
+        {% csrf_token %}
+        <div class="errors">
+            {{ user_form.errors }}
+            {{ user_form.non_field_errors }}
+            {{ profile_form.errors }}
+            {{ profile_form.non_field_errors }}
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  user_form.username.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ user_form.username }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  user_form.first_name.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ user_form.first_name }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  user_form.last_name.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ user_form.last_name }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  user_form.email.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ user_form.email }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  profile_form.street.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ profile_form.street }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  profile_form.city.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ profile_form.city }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  profile_form.zip.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ profile_form.zip }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  profile_form.country.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ profile_form.country }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  profile_form.avatar.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ profile_form.avatar }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  user_form.password1.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ user_form.password1 }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2 control-label">{{  user_form.password2.label_tag }}
+            </div>
+            <div class="col-sm-10">
+                {{ user_form.password2 }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" value="update" />
+                <input type="hidden" name="next" value="{{ next_page }}" />
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}1

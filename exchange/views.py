@@ -1,5 +1,6 @@
 import decimal
 import json
+from operator import attrgetter
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
@@ -14,6 +15,8 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from itertools import chain
+
 
 import exchange
 from exchanges.bitfinex import Bitfinex
@@ -32,7 +35,7 @@ class WebsiteCommonMixin(generic.base.ContextMixin):
     def get_context_data(self, **kwargs):
         context = super(WebsiteCommonMixin, self).get_context_data(**kwargs)
         try:
-            context.update(dict(contact_list = Contacts.objects.filter(friend = User.objects.filter(id=self.request.user.id)).order_by('-created_at')[:], transaction_list = Transactions.objects.filter(walletFrom = Wallets.objects.filter(owner=self.request.user.id)).order_by('-created_at')[:5],wallet = Wallets.objects.get(owner = User.objects.filter(id=self.request.user.id)),template = loader.get_template('exchange/dashboard.html'), current_user = User.objects.get(id=self.request.user.id), current_price_usd = current_price_usd))
+            context.update(dict(contact_list = Contacts.objects.filter(friend = User.objects.filter(id=self.request.user.id)).order_by('-created_at')[:], transaction_list = Transactions.objects.filter(walletFrom = Wallets.objects.filter(owner=self.request.user.id)).order_by('-created_at')[:5],wallet = Wallets.objects.get(owner = User.objects.filter(id=self.request.user.id)),template = loader.get_template('exchange/dashboard.html'), current_user = Profile.objects.get(user=self.request.user), current_price_usd = current_price_usd))
             return context
         except:
             return context
@@ -40,26 +43,45 @@ class WebsiteCommonMixin(generic.base.ContextMixin):
     def dispatch(self, *args, **kwargs):
         return super(WebsiteCommonMixin, self).dispatch(*args, **kwargs)
 
-
 class dashboard(WebsiteCommonMixin, TemplateView):
     template_name='exchange/dashboard.html'
-    # def get_context_data(self, **kwargs):
-    #     context = super(dashboard, self).get_context_data(**kwargs)
-    #     context["test"] = "test"
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super(dashboard, self).get_context_data(**kwargs)
+        moneyin = Transactions.objects.filter(walletTo = Wallets.objects.filter(owner=self.request.user.id))[:]
+        moneyout = Transactions.objects.filter(walletFrom = Wallets.objects.filter(owner=self.request.user.id))[:]
+        result_list = sorted(chain(moneyin, moneyout),key=attrgetter('created_at'),reverse=True)[:5]
+        context["transaction_list"] = result_list
+        return context
 
 class send(WebsiteCommonMixin, TemplateView):
     template_name='exchange/send.html'
 
-def account(context):
-    template = loader.get_template('exchange/account.html')
-    return HttpResponse(template.render())
+# class account(WebsiteCommonMixin, TemplateView):
+#     template_name='exchange/account.html'
 
+class history(WebsiteCommonMixin, TemplateView):
+    template_name='exchange/history.html'
+    def get_context_data(self, **kwargs):
+        context = super(history, self).get_context_data(**kwargs)
+        moneyin = Transactions.objects.filter(walletTo = Wallets.objects.filter(owner=self.request.user.id))
+        moneyout = Transactions.objects.filter(walletFrom = Wallets.objects.filter(owner=self.request.user.id))
+        result_list = sorted(chain(moneyin, moneyout),key=attrgetter('created_at'),reverse=True)
+        context["transaction_list"] = result_list
+        return context
+
+class request(WebsiteCommonMixin, TemplateView):
+    template_name='exchange/request.html'
+
+class contacts(WebsiteCommonMixin, TemplateView):
+    template_name='exchange/contacts.html'
+
+# using coindesk api to fetch historical data
 def historicaldata(request):
     if request.method == 'GET':
         data = CoinDesk().get_historical_data_as_dict(start='2017-08-01', end=None)
         return HttpResponse(json.dumps(data))
 
+# necessary to transform coindesk data into json
 JSONEncoder_olddefault = json.JSONEncoder.default
 def JSONEncoder_newdefault(self, o):
     if isinstance(o, decimal.Decimal): return str(o)
@@ -132,36 +154,6 @@ def checkwallet(request):
             data['result'] = 'unknown'
             return HttpResponse(json.dumps(data), content_type="application/json")
 
-class request(WebsiteCommonMixin, TemplateView):
-    template_name='exchange/request.html'
-
-def history(request):
-    transaction_list = Transactions.objects.order_by('-created_at')[:]
-    wallet = Wallets.objects.get(owner = request.user.id)
-    template = loader.get_template('exchange/history.html')
-    current_user = request.user
-    context = {
-        "current_user": current_user,
-        'transaction_list': transaction_list,
-        'wallet': wallet
-    }
-    return HttpResponse(template.render(context, request))
-
-def contacts(request):
-    contact_list = Contacts.objects.order_by('-created_at')[:]
-    wallet = Wallets.objects.get(owner = request.user.id)
-    template = loader.get_template('exchange/contacts.html')
-    current_user = request.user
-    wallet_worth = round((current_price_usd * wallet.amount), 2)
-    context = {
-        "current_user": current_user,
-        'contact_list': contact_list,
-        'wallet': wallet,
-        'current_price_usd': current_price_usd,
-        'wallet_worth': wallet_worth,
-    }
-    return HttpResponse(template.render(context, request))
-
 def signup(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -176,23 +168,20 @@ def signup(request):
         form = UserForm()
     return render(request, 'exchange/signup.html', {'form': form})
 
-@login_required
-@transaction.atomic
-def update_profile(request):
-    if request.method == 'POST':
+
+class updateprofile(WebsiteCommonMixin, TemplateView):
+    template_name='exchange/account.html'
+    def post(self, request, *args, **kwargs):
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
-        print(profile_form)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if profile_form.is_valid() and user_form.is_valid():
             profile_form.save()
-            return redirect('settings:profile')
+            user_form.save()
+            return redirect('/account')
         else:
-            messages.error(request, _('Please correct the error below.'))
-    else:
-        user_form = UserForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
-    return render(request, 'exchange/account.html', {
-        'user_form': user_form,
-        'profile_form': profile_form
-    })
+            print("an error occured")
+    def get_context_data(self, **kwargs):
+        context = super(updateprofile, self).get_context_data(**kwargs)
+        context["user_form"] = UserForm(instance=self.request.user)
+        context["profile_form"] = ProfileForm(instance=self.request.user.profile)
+        return context

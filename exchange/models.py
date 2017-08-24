@@ -13,14 +13,20 @@ class Profile(models.Model):
     city = models.CharField(max_length=50, null=True)
     zip = models.IntegerField(null=True, default="00000")
     country = models.CharField(max_length=50, null=True)
-    avatar = models.ImageField('avatar', upload_to='', null=True)
+    avatar = models.ImageField(upload_to='', null=True, default="default.png")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user
 
 class Wallets(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=19, decimal_places=10, default=0)
     address = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.address
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -41,6 +47,8 @@ class Contacts(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # class Meta:
     #     unique_together = ("friend", "wallet")
+    def __str__(self):
+        return '{} {}'.format(self.first_name, self.last_name)
 
 class Transactions(models.Model):
     walletFrom = models.ForeignKey(Wallets, on_delete=models.CASCADE, related_name='walletFrom')
@@ -48,6 +56,9 @@ class Transactions(models.Model):
     amount = models.DecimalField(max_digits=19, decimal_places=10)
     description = models.CharField(max_length=250, default="null")
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '{} -> {}'.format(self.walletFrom, self.walletTo)
 
 
 

@@ -3,79 +3,73 @@
 {% load staticfiles %}
 <script src="{% static 'js/jquery.steps.min.js' %}"></script>
 <script src="{% static 'js/request.js' %}"></script>
-
 <link href="{% static 'css/steps.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block content %}
-<h1>Request</h1>
-<div id="example-basic">
-    <h3>Keyboard</h3>
-    <section>
-        <div class="row">
-            <div class="col-xs-12">
-                <label for="exampleInputAmount">Copy & Share</label>
-            </div>
-        </div>
-        <div class="row">
-        <div class="col-xs-10">
-            <input type="text" class="form-control" value="{{ wallet.address}}">
-        </div>
-        <div class="col-xs-2">
-            <button class="btn btn-primary btn-block">Copy</button>
-        </div>
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-xs-12">
-                <label for="exampleInputAmount">Amount</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-6">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="amount" placeholder="Amount">
-                    <div class="input-group-addon">BTC</div>
+<h2>Request</h2>
+<div class="bloc-container">
+    <div id="request-form">
+        <h3>Enter informations</h3>
+        <section>
+            <div class="row">
+                <div class="col-xs-12">
+                    <label>Copy & Share</label>
                 </div>
             </div>
-
-            <div class="col-xs-6">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="amount-usd" placeholder="Amount" value="0">
-                    <div class="input-group-addon">USD</div>
+            <div class="row">
+                <div class="col-xs-10">
+                    <input type="text" class="form-control" value="{{ wallet.address}}">
+                </div>
+                <div class="col-xs-2">
+                    <button class="btn btn-primary btn-block">Copy</button>
                 </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <label>Receive to</label>
-                <select class="form-control">
-                    <option>{{ wallet.address}} ({{ wallet.amount}} BC)</option>
-                </select>
+            <hr>
+            <div class="row">
+                <div class="col-xs-12">
+                    <label for="exampleInputAmount">Amount</label>
+                </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <label for="description">Description</label>
-                <textarea class="form-control"id="description" rows="3"></textarea>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="amount" placeholder="Amount">
+                        <div class="input-group-addon">BTC</div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="amount-usd" placeholder="Amount" value="0">
+                        <div class="input-group-addon">USD</div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-
-    </section>
-    <h3>Payment Request</h3>
-    <section class="text-center">
-        <h3><span id="requested-bc-amount">00.00</span> BTC</h3>
-        <h4><span id="requested-bc-amount-usd">00.00</span> USD</h4>
-        <p>For: "<span id="requested-bc-description">Dinner last time</span>"</p>
-        <hr>
-        <small id="request-bc-link">/payment_request?address={{ wallet.address}}&amount=<span id="f_amount"></span>&message=<span id="f_description"></span></small>
-        <button class="btn btn-primary btn-block">Copy Link</button>
-
-    </section>
-
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Receive to</label>
+                    <select class="form-control">
+                        <option>{{ wallet.address}} ({{ wallet.amount}} BC)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="description">Description</label>
+                    <textarea class="form-control"id="description" rows="3"></textarea>
+                </div>
+            </div>
+        </section>
+        <h3>Link</h3>
+        <section class="text-center">
+            <h3><span id="requested-bc-amount">00.00</span> BTC</h3>
+            <h4><span id="requested-bc-amount-usd">00.00</span> USD</h4>
+            <p>For: "<span id="requested-bc-description">Dinner last time</span>"</p>
+            <hr>
+            <small id="request-bc-link">/payment_request?address={{ wallet.address}}&amount=<span id="f_amount"></span>&message=<span id="f_description"></span></small>
+            <button class="btn btn-primary">Copy Link</button>
+        </section>
+    </div>
 </div>
-</div>
-<script src="{% static 'js/steps.js' %}"></script>
-{% endblock %}
+<div class="bloc-container">
+    <script src="{% static 'js/steps.js' %}"></script>
+    {% endblock %}

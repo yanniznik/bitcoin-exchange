@@ -48,7 +48,7 @@ font-size: 16px;
 
 .info-bar > div {
     display: inline-block;
-    width: 165px;
+    padding: 0 20px;
     float: left;
     border-right: 1px solid rgba(255, 255, 255, 0.07);
     font-weight: 100;
@@ -126,7 +126,7 @@ a:visited, a {
 }
 
 .actions {
-    padding: 40px;
+    padding: 40px 5px;
     text-align: left;
 }
 
@@ -134,11 +134,16 @@ a:visited, a {
     padding-right: 20px;
 }
 
-.single-transaction:last-child {
+.single-transaction:last-child, .single-transaction-empty:last-child {
     margin-bottom: 0;
     border: 0;
     padding: 0;
 }
+
+.single-transaction .row:first-child .col-xs-6:nth-child(2) {
+    color: #9be99b;
+}
+
 
 /* main container */
 
@@ -176,7 +181,9 @@ h2 {
     border-radius: 5px;
 }
 
-.single-transaction {
+
+
+.single-transaction, .single-transaction-empty {
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     margin-bottom: 15px;
@@ -192,13 +199,19 @@ canvas#historical_data {
 }
 /* end main container */
 
-
 div#exception_handler {
     position: absolute;
-    top: -3px;
-    right: 50px;
+    top: 240px;
+    left: 45%;
+    right: 30%;
+    text-align: center;
     padding: 20px;
     border-radius: 5px;
+    z-index: 10;
+}
+
+.bg-danger {
+    background-color: #f13737;
 }
 
 .single-contact {
@@ -213,12 +226,17 @@ div#exception_handler {
 }
 
 .substracting {
-    color: red;
+    color: #e66161;
 }
 
 
+
 .adding {
-    color: green;
+    color: #9be99b;
+}
+
+.bg-info, .bg-success {
+    background-color: #673AB7;
 }
 
 .actions .disabled {
@@ -241,17 +259,111 @@ div#exception_handler {
     background: linear-gradient(to bottom, #313751 1%,#232941 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#313751', endColorstr='#232941',GradientType=0 );
 }
-
-.form-control {
+.form-control, .right-login input, .account-container input {
     display: block;
     border: none;
+    height: auto;
+    padding: 11px 16px;
     background: #303751;
-    height: 34px;
     width: 100%;
     border-radius: 3px;
     border: 1px solid transparent;
     border-top: none;
-    border-bottom: 1px solid #303856;
-    box-shadow: inset 0 1px 2px rgb(37, 43, 69), 0 -1px 1px #22294a, 0 1px 0 #222949;
+    border-bottom: 1px solid #252b45;
+    box-shadow: inset 0 1px 2px rgb(30, 34, 59), 0 -1px 1px #191c28, 0 1px 0 #23283d;
     color: #cfd2f1;
+}
+div#send-form .row {
+    margin-bottom: 20px;
+}
+
+#send-form .bloc-container.box-shadow .row {
+    margin-bottom: 0;
+}
+
+.input-group-addon {
+    padding: 0px 12px;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1;
+    color: #eee;
+    text-align: center;
+    background-color: #303751;
+    border: 0;
+    border-radius: 4px;
+}
+
+#send-form .single-transaction {
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 15px;
+}
+
+#send-form .single-transaction:hover {
+    color: #54cc91;
+    cursor: pointer;
+}
+
+section#steps-uid-0-p-1 h2 {
+    display: none;
+}
+
+hr {
+    margin-top: 30px;
+    margin-bottom: 0;
+    border: 0;
+    border-top: 1px solid #363c54;
+}
+
+div#acceptContainer {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 20px;
+    float: right;
+}
+
+.for_description {
+    margin-top: 20px;
+}
+
+.for_description span{
+    font-style: italic;
+}
+
+.user-avatar {
+    background-size: cover;
+    background-position: center;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #252b45;
+    opacity: 1;
+    color: #fff;
+}
+
+small#request-bc-link {
+    display: block;
+    margin: 40px;
+}
+
+#request-form h3 {
+    font-size: 3em;
+    color: #9be99b;
+}
+
+#request-form h4 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #252b45;
+    border-color: #fff;
+    border-radius: 0;
+    padding: 8px 59px;
+}
+
+.single-transaction.moneyout .row:first-child .col-xs-6:nth-child(2) {
+    color: #e66161;
 }

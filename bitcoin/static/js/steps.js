@@ -130,7 +130,7 @@ form.children("div").steps({
     }
 });
 
-$("#example-basic").steps({
+$("#request-form").steps({
     headerTag: "h3",
     bodyTag: "section",
     transitionEffect: "slideLeft",

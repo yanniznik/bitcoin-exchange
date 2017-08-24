@@ -52,11 +52,11 @@
     Wizard
 */
 
-.wizard > .steps
-{
+.wizard > .steps {
     position: relative;
     display: block;
     width: 100%;
+    margin-bottom: 40px;
 }
 
 .wizard.vertical > .steps
@@ -103,37 +103,25 @@
     border-radius: 5px;
 }
 
-.wizard > .steps .disabled a,
-.wizard > .steps .disabled a:hover,
-.wizard > .steps .disabled a:active
-{
-    background: #eee;
+.wizard > .steps .disabled a, .wizard > .steps .disabled a:hover, .wizard > .steps .disabled a:active {
+    background: #252b45;
     color: #aaa;
     cursor: default;
 }
 
-.wizard > .steps .current a,
-.wizard > .steps .current a:hover,
-.wizard > .steps .current a:active
-{
-    background: #2184be;
+.wizard > .steps .current a, .wizard > .steps .current a:hover, .wizard > .steps .current a:active {
+    background: #303751;
     color: #fff;
     cursor: default;
 }
 
-.wizard > .steps .done a,
-.wizard > .steps .done a:hover,
-.wizard > .steps .done a:active
-{
-    background: #9dc8e2;
+.wizard > .steps .done a, .wizard > .steps .done a:hover, .wizard > .steps .done a:active {
+    background: #252b45;
     color: #fff;
 }
 
-.wizard > .steps .error a,
-.wizard > .steps .error a:hover,
-.wizard > .steps .error a:active
-{
-    background: #ff3111;
+.wizard > .steps .error a, .wizard > .steps .error a:hover, .wizard > .steps .error a:active {
+    background: #424b6f;
     color: #fff;
 }
 
@@ -142,7 +130,7 @@
     overflow: hidden;
     position: relative;
     width: auto;
-    min-height: 35em;
+    min-height: 460px;
 }
 
 
@@ -154,16 +142,13 @@
     margin: 0 2.5% 0.5em 2.5%;
     width: 65%;
 }
-
-.wizard > .content > .body
-{
+.wizard > .content > .body {
     float: left;
     position: absolute;
-    width: 95%;
+    width: 100%;
     height: 95%;
-    padding: 2.5%;
+    padding: 10px;
 }
-
 .wizard > .content > .body ul
 {
     list-style: disc !important;
@@ -243,27 +228,26 @@
     margin: 0 0 0 1em;
 }
 
-.wizard > .actions a,
-.wizard > .actions a:hover,
-.wizard > .actions a:active
-{
-    background: #2184be;
-    color: #fff;
-    display: block;
-    padding: 0.5em 1em;
-    text-decoration: none;
-
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+.wizard > .actions a, .wizard > .actions a:hover, .wizard > .actions a:active {
+    padding: 0.5em 3em;
+    border-radius: 0px;
+    background: transparent;
+    border: 1px solid #eee;
+    color: #eeeeee;
 }
 
-.wizard > .actions .disabled a,
-.wizard > .actions .disabled a:hover,
-.wizard > .actions .disabled a:active
-{
-    background: #eee;
-    color: #aaa;
+
+.bloc-container .bloc-container {
+    padding: 0;
+    box-shadow: none;
+    margin-top: 20px;
+}
+
+.wizard > .actions .disabled a, .wizard > .actions .disabled a:hover, .wizard > .actions .disabled a:active {
+    background: #252b45;
+    color: #686868;
+    border-color: #686868;
+    cursor: default;
 }
 
 .wizard > .loading

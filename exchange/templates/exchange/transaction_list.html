@@ -1,17 +1,14 @@
 <h2>Latest transactions</h2>
 <div class="bloc-container box-shadow">
-
     {% if transaction_list %}
-
     {% for transaction in transaction_list %}
-
     <div class="single-transaction">
         <div class="row">
             <div class="col-xs-6">
-                <span>{{ transaction.walletFrom.address }}</span>
+                <span class="transactionFrom">{{ transaction.walletFrom.address }}</span>
             </div>
             <div class="col-xs-6">
-                <span>{{ transaction.amount }}</span> BTC
+                <span class="sign">+</span> <span class="transactionAmount">{{ transaction.amount }}</span> BTC
             </div>
         </div>
         <div class="row small-letters">
@@ -24,7 +21,6 @@
         </div>
     </div>
     {% endfor %}
-
     {% else %}
     <div class="single-transaction">
         <div class="row">
@@ -33,6 +29,5 @@
             </div>
         </div>
     </div>
-
     {% endif %}
 </div>
