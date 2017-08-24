@@ -1,36 +1,26 @@
 import decimal
 import json
 from operator import attrgetter
-
-from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db import transaction
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 from itertools import chain
-
-
-import exchange
 from exchanges.bitfinex import Bitfinex
 from exchanges.coindesk import CoinDesk
-
-from django.utils.translation import gettext as _
-
-# Create your views here.
 from exchange.forms import ProfileForm, UserForm
 from exchange.models import Transactions, Wallets, Contacts, Profile
 
 # Fetching current price at server launch to avoid lagging
 current_price_usd = Bitfinex().get_current_price()
 
+# common class context
 class WebsiteCommonMixin(generic.base.ContextMixin):
     def get_context_data(self, **kwargs):
         context = super(WebsiteCommonMixin, self).get_context_data(**kwargs)
@@ -56,9 +46,6 @@ class dashboard(WebsiteCommonMixin, TemplateView):
 class send(WebsiteCommonMixin, TemplateView):
     template_name='exchange/send.html'
 
-# class account(WebsiteCommonMixin, TemplateView):
-#     template_name='exchange/account.html'
-
 class history(WebsiteCommonMixin, TemplateView):
     template_name='exchange/history.html'
     def get_context_data(self, **kwargs):
@@ -75,9 +62,26 @@ class request(WebsiteCommonMixin, TemplateView):
 class contacts(WebsiteCommonMixin, TemplateView):
     template_name='exchange/contacts.html'
 
-# using coindesk api to fetch historical data
-def historicaldata(request):
-    if request.method == 'GET':
+
+class updateprofile(WebsiteCommonMixin, TemplateView):
+    template_name='exchange/account.html'
+    def post(self, request, *args, **kwargs):
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if profile_form.is_valid() and user_form.is_valid():
+            profile_form.save()
+            user_form.save()
+            return redirect('/account')
+        else:
+            print("an error occured")
+    def get_context_data(self, **kwargs):
+        context = super(updateprofile, self).get_context_data(**kwargs)
+        context["user_form"] = UserForm(instance=self.request.user)
+        context["profile_form"] = ProfileForm(instance=self.request.user.profile)
+        return context
+
+class historicaldata(WebsiteCommonMixin, TemplateView):
+    def get(self, *args, **kwargs):
         data = CoinDesk().get_historical_data_as_dict(start='2017-08-01', end=None)
         return HttpResponse(json.dumps(data))
 
@@ -167,21 +171,3 @@ def signup(request):
     else:
         form = UserForm()
     return render(request, 'exchange/signup.html', {'form': form})
-
-
-class updateprofile(WebsiteCommonMixin, TemplateView):
-    template_name='exchange/account.html'
-    def post(self, request, *args, **kwargs):
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if profile_form.is_valid() and user_form.is_valid():
-            profile_form.save()
-            user_form.save()
-            return redirect('/account')
-        else:
-            print("an error occured")
-    def get_context_data(self, **kwargs):
-        context = super(updateprofile, self).get_context_data(**kwargs)
-        context["user_form"] = UserForm(instance=self.request.user)
-        context["profile_form"] = ProfileForm(instance=self.request.user.profile)
-        return context

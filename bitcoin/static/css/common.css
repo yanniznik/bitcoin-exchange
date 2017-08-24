@@ -367,3 +367,116 @@ small#request-bc-link {
 .single-transaction.moneyout .row:first-child .col-xs-6:nth-child(2) {
     color: #e66161;
 }
+
+#toggle-menu {
+	  display: none;
+  color: #fff;
+  text-align: center;
+    position: absolute;
+    top: 16px;
+    right: 21px;
+    transition: .4s;
+    z-index: 10;
+    font-size: 1em!important;
+}
+
+#toggle-menu:hover {
+  cursor: pointer;
+}
+
+#toggle-menu:before {
+  font-size: 15px;
+  content: "Menu";
+  text-align: center;
+}
+
+#toe-menu {
+	visibility: hidden;
+
+}
+
+.sidebar {
+	transition: all 0.2s ease-in-out;
+}
+
+
+/* mobile */
+
+/*************** MEDIA QUERIES *******************/
+@media only screen and (max-width: 1080px) {
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    bottom: auto;
+    width: 100%;
+        transform: translateY(-100%);
+    z-index: 1;
+}
+
+.info-bar {
+    top: auto;
+    bottom: 0;
+    left: 0;
+}
+
+.wizard > .steps a, .wizard > .steps a:hover, .wizard > .steps a:active {
+    font-size: 0.6em;
+}
+
+.wizard > .actions a, .wizard > .actions a:hover, .wizard > .actions a:active {
+    padding: 0.5em 2em!important;
+}
+
+div#exception_handler {
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.main-container {
+    margin: 0;
+    padding: 20px;
+    padding-bottom: 100px;
+}
+
+.dashboard-top {
+    display: block;
+    margin: 0;
+    margin-top: -35px;
+}
+
+.chart-container {
+    height: 200px;
+}
+
+.info-bar > div {
+    font-size: 0.9em;
+}
+
+.info-bar > div:nth-child(4) {
+    display: none;
+}
+
+.info-bar > div.log-out a {
+    padding: 25px 35px;
+    display: block;
+    display: none;
+}
+
+.upper-sidebar {
+    display: none;
+}
+
+
+#toe-menu:checked + .sidebar {
+        transform: translateY(0);
+  }
+
+
+ #toggle-menu {
+    display: block;
+  }
+
+
+}
