@@ -4,5 +4,5 @@ An utterly fantastic bitcoin exchange plateform done with Django 1.11.
 
 ## Demo
 
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Alt Text](https://github.com/yanniznik/bitcoin-exchange/blob/master/images/overview.gif)
 
