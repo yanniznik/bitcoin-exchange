@@ -1,17 +1,20 @@
-# Bitcoin Exchange plateform
+# Bitcoin Exchange platform
 
-An utterly fantastic bitcoin exchange plateform done with Django 1.11.
+An utterly fantastic bitcoin exchange platform done with Django 1.11.
 + Conceptual platform. Not connected to the blockchain.
 + Design by myself.
 
 ## Features
 
 - Account Creation
-- Authentification
+- Authentication
+- CoinDesk API retrieves historical data
+- Wallet handling
 - Send BTC
 - Receive BTC
 - Add Contacts
 - Transaction list
+- Update account
 - Error handling
 
 ## Demo
